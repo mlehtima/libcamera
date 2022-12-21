@@ -1,0 +1,24 @@
+diff --git a/src/gstreamer/gstlibcamera-utils.cpp b/src/gstreamer/gstlibcamera-utils.cpp
+index 36b9564c..0f6ba7bc 100644
+--- a/src/gstreamer/gstlibcamera-utils.cpp
++++ b/src/gstreamer/gstlibcamera-utils.cpp
+@@ -148,6 +148,7 @@ colorspace_from_colorimetry(const GstVideoColorimetry &colorimetry)
+ 	case GST_VIDEO_TRANSFER_GAMMA22:
+ 	case GST_VIDEO_TRANSFER_GAMMA28:
+ 		GST_WARNING("GAMMA 18, 20, 22, 28 transfer functions not supported");
++		[[fallthrough]];
+ 	/* fallthrough */
+ 	case GST_VIDEO_TRANSFER_GAMMA10:
+ 		colorspace->transferFunction = ColorSpace::TransferFunction::Linear;
+diff --git a/src/libcamera/camera_sensor.cpp b/src/libcamera/camera_sensor.cpp
+index ae3127d6..3fa15888 100644
+--- a/src/libcamera/camera_sensor.cpp
++++ b/src/libcamera/camera_sensor.cpp
+@@ -427,6 +427,7 @@ int CameraSensor::initProperties()
+ 			LOG(CameraSensor, Warning)
+ 				<< "Unsupported camera location "
+ 				<< v4l2Orientation << ", setting to External";
++			[[fallthrough]];
+ 			/* Fall-through */
+ 		case V4L2_CAMERA_ORIENTATION_EXTERNAL:
+ 			propertyValue = properties::CameraLocationExternal;

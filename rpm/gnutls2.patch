@@ -1,0 +1,33 @@
+diff --git a/src/libcamera/pub_key.cpp b/src/libcamera/pub_key.cpp
+index 64dfa234..432553a1 100644
+--- a/src/libcamera/pub_key.cpp
++++ b/src/libcamera/pub_key.cpp
+@@ -13,7 +13,14 @@
+ #include <openssl/sha.h>
+ #include <openssl/x509.h>
+ #elif HAVE_GNUTLS
++#ifdef __cplusplus
++extern "C"
++{
++#endif
+ #include <gnutls/abstract.h>
++#ifdef __cplusplus
++}
++#endif
+ #endif
+ 
+ /**
+@@ -129,8 +136,13 @@ bool PubKey::verify([[maybe_unused]] Span<const uint8_t> data,
+ 		static_cast<unsigned int>(sig.size())
+ 	};
+ 
++#if GNUTLS_VERSION_MAJOR >= 3
+ 	int ret = gnutls_pubkey_verify_data2(pubkey_, GNUTLS_SIGN_RSA_SHA256, 0,
+ 					     &gnuTlsData, &gnuTlsSig);
++#else
++	int ret = gnutls_pubkey_verify_data(pubkey_, 0,
++					     &gnuTlsData, &gnuTlsSig);
++#endif
+ 	return ret >= 0;
+ #else
+ 	return false;
