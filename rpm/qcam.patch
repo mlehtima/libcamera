@@ -1,0 +1,38 @@
+diff --git a/src/apps/qcam/meson.build b/src/apps/qcam/meson.build
+index eb0712d9..09db0653 100644
+--- a/src/apps/qcam/meson.build
++++ b/src/apps/qcam/meson.build
+@@ -35,8 +35,21 @@ qcam_resources = files([
+ 
+ qt5_cpp_args = [apps_cpp_args, '-DQT_NO_KEYWORDS']
+ 
++gl_dep = dependency('gl',
++                    method : 'pkg-config',
++                    required : false)
++
++glesv1_dep = dependency('glesv1',
++                        method : 'pkg-config',
++                        required : false)
++
++glesv2_dep = dependency('glesv2',
++                        method : 'pkg-config',
++                        required : false)
++
+ if cxx.has_header_symbol('QOpenGLWidget', 'QOpenGLWidget',
+-                         dependencies : qt5_dep, args : '-fPIC')
++                         dependencies : qt5_dep, args : '-fPIC') and \
++        (gl_dep.found() or glesv1_dep.found() or glesv2_dep.found())
+     qcam_sources += files([
+         'viewfinder_gl.cpp',
+     ])
+@@ -65,6 +78,9 @@ qcam  = executable('qcam', qcam_sources, resources,
+                    install : true,
+                    link_with : apps_lib,
+                    dependencies : [
++                       gl_dep,
++                       glesv1_dep,
++                       glesv2_dep,
+                        libatomic,
+                        libcamera_public,
+                        libtiff,
+
