@@ -1,6 +1,6 @@
 Name:       libcamera
 Summary:    A library to support complex camera ISPs
-Version:    0.2.0
+Version:    0.3.0
 Release:    1
 License:    LGPLv2+
 URL:        https://libcamera.org
@@ -19,6 +19,8 @@ BuildRequires: pkgconfig(gstreamer-1.0)
 BuildRequires: pkgconfig(gstreamer-plugins-base-1.0)
 BuildRequires: pkgconfig(gtest)
 BuildRequires: pkgconfig(libevent)
+BuildRequires: pkgconfig(libjpeg)
+BuildRequires: pkgconfig(libtiff-4)
 BuildRequires: pkgconfig(libv4l2)
 BuildRequires: pkgconfig(libudev)
 BuildRequires: pkgconfig(openssl)
@@ -59,6 +61,7 @@ export LDFLAGS="-Wl,--copy-dt-needed-entries"
 %meson \
     -Ddocumentation=disabled \
     -Dgstreamer=enabled \
+    -Dpycamera=disabled \
     -Dtracing=disabled \
     -Dv4l2=true
 
