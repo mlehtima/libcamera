@@ -1,10 +1,12 @@
 Name:       libcamera
 Summary:    A library to support complex camera ISPs
-Version:    0.3.0
+Version:    0.3.2
 Release:    1
 License:    LGPLv2+
 URL:        https://libcamera.org
 Source:     %{name}-%{version}.tar.bz2
+Patch1:     0001-Revert-apps-qcam-Port-to-Qt-6.patch
+Patch2:     0002-Revert-qcam-Drop-Qt-version-checks.patch
 
 BuildRequires: boost-devel
 BuildRequires: cmake
@@ -75,7 +77,6 @@ export LDFLAGS="-Wl,--copy-dt-needed-entries"
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
 %license COPYING.rst LICENSES/LGPL-2.1-or-later.txt
 %{_datadir}/libcamera/
 %{_libdir}/gstreamer-1.0/libgstlibcamera.so

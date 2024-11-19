@@ -1,0 +1,52 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+Date: Tue, 19 Nov 2024 23:00:50 +0200
+Subject: [PATCH] Revert "qcam: Drop Qt version checks"
+
+This reverts commit e5fd3bea77fb1f02479c68e13a34e49027dad2dc.
+---
+ src/apps/qcam/main_window.cpp   | 10 ++++++++++
+ src/apps/qcam/viewfinder_qt.cpp |  4 ++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/src/apps/qcam/main_window.cpp b/src/apps/qcam/main_window.cpp
+index dd2aa19618a165d7c13c815d92434a83cd6cb4cf..d515beeda27557a64a5d31077a876b19c8e07d53 100644
+--- a/src/apps/qcam/main_window.cpp
++++ b/src/apps/qcam/main_window.cpp
+@@ -37,6 +37,16 @@
+ 
+ using namespace libcamera;
+ 
++#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
++/*
++ * Qt::fixed was introduced in v5.14, and ::fixed deprecated in v5.15. Allow
++ * usage of Qt::fixed unconditionally.
++ */
++namespace Qt {
++constexpr auto fixed = ::fixed;
++} /* namespace Qt */
++#endif
++
+ /**
+  * \brief Custom QEvent to signal capture completion
+  */
+diff --git a/src/apps/qcam/viewfinder_qt.cpp b/src/apps/qcam/viewfinder_qt.cpp
+index 1a238922b2d4451039f4e9c80bcce34d7f75a204..54077004e83b3affa819553b7a554ffef76ae0cd 100644
+--- a/src/apps/qcam/viewfinder_qt.cpp
++++ b/src/apps/qcam/viewfinder_qt.cpp
+@@ -27,11 +27,15 @@
+ 
+ static const QMap<libcamera::PixelFormat, QImage::Format> nativeFormats
+ {
++#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
+ 	{ libcamera::formats::ABGR8888, QImage::Format_RGBX8888 },
+ 	{ libcamera::formats::XBGR8888, QImage::Format_RGBX8888 },
++#endif
+ 	{ libcamera::formats::ARGB8888, QImage::Format_RGB32 },
+ 	{ libcamera::formats::XRGB8888, QImage::Format_RGB32 },
++#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+ 	{ libcamera::formats::RGB888, QImage::Format_BGR888 },
++#endif
+ 	{ libcamera::formats::BGR888, QImage::Format_RGB888 },
+ 	{ libcamera::formats::RGB565, QImage::Format_RGB16 },
+ };
