@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+Date: Tue, 19 Nov 2024 23:41:12 +0200
+Subject: [PATCH] Fix build with python 3.8 and older
+
+---
+ utils/codegen/gen-gst-controls.py | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/utils/codegen/gen-gst-controls.py b/utils/codegen/gen-gst-controls.py
+index 2601a67588a3a227cb0e38e1ab3da57f00fee38f..42f85b295517a3eed1aec70d8b4718e39cb04218 100755
+--- a/utils/codegen/gen-gst-controls.py
++++ b/utils/codegen/gen-gst-controls.py
+@@ -81,6 +81,10 @@ def snake_case(s):
+ def kebab_case(s):
+     return snake_case(s).replace('_', '-')
+ 
++def remove_prefix(text, prefix):
++    if text.startswith(prefix):
++        return text[len(prefix):]
++    return text
+ 
+ def extend_control(ctrl):
+     if ctrl.vendor != 'libcamera':
+@@ -96,7 +100,10 @@ def extend_control(ctrl):
+         # Remove common prefix from enum variant names
+         prefix = find_common_prefix([enum.name for enum in ctrl.enum_values])
+         for enum in ctrl.enum_values:
+-            enum.gst_name = kebab_case(enum.name.removeprefix(prefix))
++           if sys.version_info >= (3, 9):
++                enum.gst_name = kebab_case(enum.name.removeprefix(prefix))
++           else:
++                enum.gst_name = kebab_case(remove_prefix(enum.name, prefix))
+ 
+         ctrl.gtype = 'enum'
+         ctrl.default = '0'

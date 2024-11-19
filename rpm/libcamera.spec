@@ -7,6 +7,7 @@ URL:        https://libcamera.org
 Source:     %{name}-%{version}.tar.bz2
 Patch1:     0001-Revert-apps-qcam-Port-to-Qt-6.patch
 Patch2:     0002-Revert-qcam-Drop-Qt-version-checks.patch
+Patch3:     0003-Fix-build-with-python-3.8-and-older.patch
 
 BuildRequires: boost-devel
 BuildRequires: cmake
