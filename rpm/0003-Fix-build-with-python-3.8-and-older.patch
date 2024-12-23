@@ -8,7 +8,7 @@ Subject: [PATCH] Fix build with python 3.8 and older
  1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/utils/codegen/gen-gst-controls.py b/utils/codegen/gen-gst-controls.py
-index 2601a67588a3a227cb0e38e1ab3da57f00fee38f..42f85b295517a3eed1aec70d8b4718e39cb04218 100755
+index df0988266294ba1c5ee2b094ffdfa8bf39595d42..a7eaf8f38471a4ced0e4f538ae1e9c6c78bfbb12 100755
 --- a/utils/codegen/gen-gst-controls.py
 +++ b/utils/codegen/gen-gst-controls.py
 @@ -81,6 +81,10 @@ def snake_case(s):

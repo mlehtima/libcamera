@@ -10,7 +10,7 @@ This reverts commit e5fd3bea77fb1f02479c68e13a34e49027dad2dc.
  2 files changed, 14 insertions(+)
 
 diff --git a/src/apps/qcam/main_window.cpp b/src/apps/qcam/main_window.cpp
-index de4876726b0885fad64498ddeeef14702aa82f2d..696199febbcc056c563d7b9be760f86bc64f6660 100644
+index 3880a846e3809f93d2848803d720eb955c5083fd..99aae612385eccb9844b3c7e4882ffd3ee2e0288 100644
 --- a/src/apps/qcam/main_window.cpp
 +++ b/src/apps/qcam/main_window.cpp
 @@ -37,6 +37,16 @@
